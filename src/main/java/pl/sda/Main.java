@@ -67,37 +67,45 @@ public class Main {
         return zoo;
     }
 
-    static void checkWhoWon(List<? super BearInterface> list) {
+    static void checkWhoWon(List<? super BearInterface> list) throws InterruptedException {
 
 
         Random random = new Random();
         int count = 0;
-        while(list.size() > 1) {
+        while (list.size() > 1) {
             Collections.shuffle(list);
-            for (int i = 0; i < list.size()-1; i++) {
+            for (int i = 0; i < list.size() - 1; i++) {
                 int chance = random.nextInt(4);
                 if (chance == 1) {
                     if (list.get(i) instanceof PolarBear) {
-                        System.out.println("Polar Bear kills: " + list.get(i + 1).getClass().getSimpleName());
+                        System.out.println(((PolarBear) list.get(i)).getClass().getSimpleName() + " kills: "
+                                + list.get(i + 1).getClass().getSimpleName());
                         list.remove(list.get(i + 1));
                     } else if (list.get(i) instanceof TeddyBear) {
-                        System.out.println(list.get(i).getClass().getSimpleName() + " przytula " + list.get(i + 1).getClass().getSimpleName());
+                        System.out.println(list.get(i).getClass().getSimpleName() + " hugs "
+                                + list.get(i + 1).getClass().getSimpleName());
                     } else {
-                        System.out.println(list.get(i).getClass().getSimpleName() + " only hurts " +
-                                list.get(i + 1).getClass().getSimpleName());
+                        System.out.println(list.get(i).getClass().getSimpleName() + " only hurts "
+                                + list.get(i + 1).getClass().getSimpleName());
                     }
-                }
+                    } else {
+                        System.out.println(list.get(i).getClass().getSimpleName() + " misses against: "
+                                + list.get(i + 1).getClass().getSimpleName());
+                    }
             }
             count++;
         }
-        System.out.println(count);
+        System.out.println("Liczba rund: " + count);
     }
 
     public static void main(String[] args) {
 
         List<? super BearInterface> list = addAnimals();
-        checkWhoWon(list);
-
+        try {
+            checkWhoWon(list);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
